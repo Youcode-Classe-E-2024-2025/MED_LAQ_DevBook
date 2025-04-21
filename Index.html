@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque Dynamique</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filters .form-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #2c3e50;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ma Bibliothèque</h1>
+        
+        
+        <div class="form-group">
+            <label for="title">Titre du livre</label>
+            <input type="text" id="title" placeholder="Entrez le titre du livre">
+        </div>
+        <div class="form-group">
+            <label for="author">Auteur</label>
+            <input type="text" id="author" placeholder="Entrez le nom de l'auteur">
+        </div>
+        <div class="form-group">
+            <label for="genre">Genre</label>
+            <select id="genre">
+                <option value="">Sélectionnez un genre</option>
+                <option value="Roman">Roman</option>
+                <option value="Science-Fiction">Science-Fiction</option>
+                <option value="Fantastique">Fantastique</option>
+                <option value="Policier">Policier</option>
+                <option value="Biographie">Biographie</option>
+                <option value="Histoire">Histoire</option>
+                <option value="Autre">Autre</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="year">Année de publication</label>
+            <input type="number" id="year" placeholder="Entrez l'année de publication">
+        </div>
+        <button id="addBook">Ajouter un livre</button>
+        
+        <hr style="margin: 20px 0;">
+        
+        
+        <div class="filters">
+            <div class="form-group">
+                <label for="filterTitle">Filtrer par titre</label>
+                <input type="text" id="filterTitle" placeholder="Titre...">
+            </div>
+            <div class="form-group">
+                <label for="filterAuthor">Filtrer par auteur</label>
+                <input type="text" id="filterAuthor" placeholder="Auteur...">
+            </div>
+            <div class="form-group">
+                <label for="filterGenre">Filtrer par genre</label>
+                <select id="filterGenre">
+                    <option value="">Tous les genres</option>
+                    <option value="Roman">Roman</option>
+                    <option value="Science-Fiction">Science-Fiction</option>
+                    <option value="Fantastique">Fantastique</option>
+                    <option value="Policier">Policier</option>
+                    <option value="Biographie">Biographie</option>
+                    <option value="Histoire">Histoire</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+        </div>
+        
+        
+        <table id="booksList">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Genre</th>
+                    <th>Année</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+        <div id="emptyMessage" class="empty-message">
+            Aucun livre dans la bibliothèque. Ajoutez votre premier livre !
+        </div>
+        
+        <div class="stats">
+            <span id="bookCount">0 livres au total</span>
+            <span id="genreCount"></span>
+        </div>
+    </div>
+
+    <script>
+        
+        let books = [
+            { id: 1, title: "1984", author: "George Orwell", genre: "Science-Fiction", year: 1949 },
+            { id: 2, title: "Le Petit Prince", author: "Antoine de Saint-Exupéry", genre: "Roman", year: 1943 },
+            { id: 3, title: "Harry Potter à l'école des sorciers", author: "J.K. Rowling", genre: "Fantastique", year: 1997 },
+            { id: 4, title: "Le Seigneur des Anneaux", author: "J.R.R. Tolkien", genre: "Fantastique", year: 1954 },
+            { id: 5, title: "Les Misérables", author: "Victor Hugo", genre: "Roman", year: 1862 }
+        ];
+        let nextId = 6;
+
+        
+        const titleInput = document.getElementById('title');
+        const authorInput = document.getElementById('author');
+        const genreInput = document.getElementById('genre');
+        const yearInput = document.getElementById('year');
+        const addButton = document.getElementById('addBook');
+        const booksListBody = document.querySelector('#booksList tbody');
+        const emptyMessage = document.getElementById('emptyMessage');
+        const bookCount = document.getElementById('bookCount');
+        const genreCount = document.getElementById('genreCount');
+        const filterTitle = document.getElementById('filterTitle');
+        const filterAuthor = document.getElementById('filterAuthor');
+        const filterGenre = document.getElementById('filterGenre');
+
+        
+        function renderBooks(booksToRender) {
+            booksListBody.innerHTML = '';
+            
+            if (booksToRender.length === 0) {
+                emptyMessage.style.display = 'block';
+                bookCount.textContent = '0 livre au total';
+                genreCount.textContent = '';
+                return;
+            }
+            
+            emptyMessage.style.display = 'none';
+            
+            booksToRender.forEach(book => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.genre}</td>
+                    <td>${book.year}</td>
+                    <td class="actions">
+                        <button class="btn-danger" data-id="${book.id}">Supprimer</button>
+                    </td>
+                `;
+                booksListBody.appendChild(row);
+            });
+            
+            
+            const bookText = booksToRender.length > 1 ? 'livres' : 'livre';
+            bookCount.textContent = `${booksToRender.length} ${bookText} au total`;
+            
+            
+            const genres = {};
+            booksToRender.forEach(book => {
+                if (book.genre) {
+                    genres[book.genre] = (genres[book.genre] || 0) + 1;
+                }
+            });
+            
+            const genresText = Object.keys(genres)
+                .map(genre => `${genre}: ${genres[genre]}`)
+                .join(', ');
+            
+            genreCount.textContent = genresText;
+            
+            
+            document.querySelectorAll('.btn-danger').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    removeBook(id);
+                });
+            });
+        }
+
+        
+        function addBook() {
+            const title = titleInput.value.trim();
+            const author = authorInput.value.trim();
+            const genre = genreInput.value;
+            const year = parseInt(yearInput.value);
+            
+            if (!title || !author) {
+                alert('Veuillez remplir au moins le titre et l\'auteur.');
+                return;
+            }
+            
+            const newBook = {
+                id: nextId++,
+                title,
+                author,
+                genre,
+                year: isNaN(year) ? '' : year
+            };
+            
+            books.push(newBook);
+            
+            
+            titleInput.value = '';
+            authorInput.value = '';
+            genreInput.value = '';
+            yearInput.value = '';
+            
+            
+            filterBooks();
+        }
+
+        
+        function removeBook(id) {
+            books = books.filter(book => book.id !== id);
+            filterBooks();
+        }
+
+        
+        function filterBooks() {
+            const titleFilter = filterTitle.value.toLowerCase();
+            const authorFilter = filterAuthor.value.toLowerCase();
+            const genreFilter = filterGenre.value;
+            
+            const filteredBooks = books.filter(book => {
+                const matchTitle = book.title.toLowerCase().includes(titleFilter);
+                const matchAuthor = book.author.toLowerCase().includes(authorFilter);
+                const matchGenre = !genreFilter || book.genre === genreFilter;
+                
+                return matchTitle && matchAuthor && matchGenre;
+            });
+            
+            renderBooks(filteredBooks);
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            addButton.addEventListener('click', addBook);
+            filterTitle.addEventListener('input', filterBooks);
+            filterAuthor.addEventListener('input', filterBooks);
+            filterGenre.addEventListener('change', filterBooks);
+            
+            
+            renderBooks(books);
+        });
+    </script>
+</body>
+</html>
