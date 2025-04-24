@@ -1,52 +1,42 @@
-class BorrowRepository {
-  constructor(db) {
-    this.db = db;
-  }
+class CategoryRepository {
+    constructor(db) {
+        this.db = db;
+    }
 
-  async getAllBorrows() {
-    const sql = 'SELECT * FROM borrow';
-    const [rows] = await this.db.execute(sql);
-    return rows;
-  }
+    async getAllCategories() {
+        const categories = await this.db.query('SELECT * FROM categories');
+        return categories.map(row => new Category(row.id, row.name, row.description, row.createdAt));
+    }
 
-  async getBorrowById(id) {
-    const sql = 'SELECT * FROM borrow WHERE id = ?';
-    const [rows] = await this.db.execute(sql, [id]);
-    return rows[0];
-  }
-
-  async createBorrow(borrow) {
-    const sql = 'INSERT INTO borrow (user_id, book_id, borrow_date, return_date) VALUES (?, ?, ?, ?)';
-    const [result] = await this.db.execute(sql, [
-      borrow.user_id,
-      borrow.book_id,
-      borrow.borrow_date,
-      borrow.return_date,
-    ]);
-    return result.insertId;
-  }
-  async updateBorrow(id, borrow) {
-    const sql = 'UPDATE borrow SET user_id = ?, book_id = ?, borrow_date = ?, return_date = ? WHERE id = ?';
-    await this.db.execute(sql, [
-      borrow.user_id,
-      borrow.book_id,
-      borrow.borrow_date,
-      borrow.return_date,
-      id,
-    ]);
-  }
-  async deleteBorrow(id) {
-    const sql = 'DELETE FROM borrow WHERE id = ?';
-    await this.db.execute(sql, [id]);
-  }
-  async getBorrowsByUserId(userId) {
-    const sql = 'SELECT * FROM borrow WHERE user_id = ?';
-    const [rows] = await this.db.execute(sql, [userId]);
-    return rows;
-  }
-  async getBorrowsByBookId(bookId) {
-    const sql = 'SELECT * FROM borrow WHERE book_id = ?';
-    const [rows] = await this.db.execute(sql, [bookId]);
-    return rows;
-  }
+    async getCategoryById(id) {
+        const category = await this.db.query('SELECT * FROM categories WHERE id = ?', [id]);
+        if (category.length === 0) {
+            throw new Error('Category not found');
+        }
+        const row = category[0];
+        return new Category(row.id, row.name, row.description, row.createdAt);
+    }
+    async createCategory(category) {
+        const result = await this.db.query(
+            'INSERT INTO categories (name, description) VALUES (?, ?)',
+            [category.name, category.description]
+        );
+        return new Category(result.insertId, category.name, category.description, new Date());
+    }
+    async updateCategory(id, category) {
+        const result = await this.db.query(
+            'UPDATE categories SET name = ?, description = ? WHERE id = ?',
+            [category.name, category.description, id]
+        );
+        if (result.affectedRows === 0) {
+            throw new Error('Category not found');
+        }
+        return new Category(id, category.name, category.description, new Date());
+    }
+    async deleteCategory(id) {
+        const result = await this.db.query('DELETE FROM categories WHERE id = ?', [id]);
+        if (result.affectedRows === 0) {
+            throw new Error('Category not found');
+        }
+    }
 }
