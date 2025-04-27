@@ -1,4 +1,4 @@
-class BookRepository {
+class categoryRepository {
   constructor(db) {
     this.db = db;
   }
