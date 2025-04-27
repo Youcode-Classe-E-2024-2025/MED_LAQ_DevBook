@@ -1,17 +1,22 @@
-import Book from '../models/Book.js';
+import BookRepository from "../Repository/BookRepository.js";
 
-export const getAllBooks = (req, res) => {
-  db.query('SELECT * FROM books', (err, results) => {
-    if (err) return res.status(500).json(err);
-    res.json(results.map(book => new Book(book.id, book.title, book.author, book.category, book.status)));
-  });
+let bookRepository;
+
+export const initializeBookController = (db) => {
+  bookRepository = new BookRepository(db);
 };
 
-export const addBook = (req, res) => {
-  const { title, author, category, status } = req.body;
-  const query = 'INSERT INTO books (title, author, category, status) VALUES (?, ?, ?, ?)';
-  db.query(query, [title, author, category, status], (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: '📚 Livre ajouté avec succès!' });
-  });
+export const getAllBooks = async (req, res) => {
+  try {
+    const books = await bookRepository.findAll();
+    res.status(200).json(books);
+  } catch (error) {
+    console.error("Error in getAllBooks controller:", error.message);
+    res
+      .status(500)
+      .json({
+        message: "Failed to fetch books. Please try again later.",
+        error: error.message,
+      });
+  }
 };
