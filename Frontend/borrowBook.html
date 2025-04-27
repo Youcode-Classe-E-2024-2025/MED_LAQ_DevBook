@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emprunter un livre - Bibliothèque Dynamique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100"></body>
+    <div class="container mx-auto px-4 py-8 max-w-md">
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
+          <i class="fas fa-book mr-2"></i>Emprunter un livre
+        </h1>
+        <div class="space-y-4">
+          <div class="space-y-2">
+            <label for="bookTitle" class="block text-sm font-medium text-gray-700">
+              <i class="fas fa-book-open mr-1"></i>Titre du livre
+            </label>
+            <input
+              type="text"
+              id="bookTitle"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Entrez le titre du livre"
+              readonly
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="borrowDate" class="block text-sm font-medium text-gray-700">
+              <i class="fas fa-calendar mr-1"></i>Date d'emprunt
+            </label>
+            <input
+              type="date"
+              id="borrowDate"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="returnDate" class="block text-sm font-medium text-gray-700">
+              <i class="fas fa-calendar-check mr-1"></i>Date de retour prévue
+            </label>
+            <input
+              type="date"
+              id="returnDate"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="notes" class="block text-sm font-medium text-gray-700">
+              <i class="fas fa-sticky-note mr-1"></i>Notes
+            </label>
+            <textarea
+              id="notes"
+              rows="3"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Ajoutez des notes concernant l'emprunt"
+            ></textarea>
+          </div>
+
+          <div class="flex space-x-4"></div>
+            <button class="w-full bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-200">
+              <i class="fas fa-check mr-2"></i>Confirmer l'emprunt
+            </button>
+            <button class="w-full bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700 transition duration-200"></button>
+              <i class="fas fa-times mr-2"></i>Annuler
+            </button>
+          </div>
+
+          <p class="text-sm text-gray-600 text-center mt-4"></p>
+            <i class="fas fa-info-circle mr-1"></i>La période d'emprunt maximale est de 30 jours
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="./js/borrow.js"></script>
+  </body>
+</html>
