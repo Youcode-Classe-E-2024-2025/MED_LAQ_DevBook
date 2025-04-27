@@ -138,7 +138,7 @@
             const emptyMessage = document.querySelector('#emptyMessage');
             const bookCount = document.querySelector('#bookCount');
 
-            const fetchBooks = async function() {
+            async function fetchBooks() {
                 try {
                     const response = await fetch('/api/books', {
                         method: 'GET',
@@ -152,17 +152,14 @@
                     }
 
                     const books = await response.json();
-                    console.log(books);
-                    
                     booksList.innerHTML = '';
 
-                    if (books.length === 0) {
+                    if (!books.length) {
                         emptyMessage.style.display = 'block';
                         bookCount.textContent = '0 livres au total';
                     } else {
                         emptyMessage.style.display = 'none';
                         books.forEach(book => {
-                            console.log(book);
                             const row = document.createElement('tr');
                             row.innerHTML = `
                                 <td class="px-6 py-4">${book.title}</td>
@@ -170,22 +167,19 @@
                                 <td class="px-6 py-4">${book.category_name}</td>
                                 <td class="px-6 py-4">${book.published_date}</td>
                                 <td class="px-6 py-4">${book.isbn}</td>
-                                <td class="px-6 py-4">
-                                    <button class="text-red-500 hover:underline">Supprimer</button>
-                                </td>
+                                <td class="px-6 py-4"></td>
                             `;
                             booksList.appendChild(row);
                         });
                         bookCount.textContent = `${books.length} livres au total`;
                     }
                 } catch (error) {
-                    console.error(error.message);
                     emptyMessage.textContent = 'Erreur: Impossible de récupérer les livres. Veuillez réessayer plus tard.';
                     emptyMessage.style.display = 'block';
                     booksList.innerHTML = '';
                     bookCount.textContent = '0 livres au total';
                 }
-            };
+            }
 
             fetchBooks();
         });
