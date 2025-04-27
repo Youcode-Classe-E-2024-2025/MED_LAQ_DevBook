@@ -1,3 +1,3 @@
 /node_modules
 .env
-/database/Queries.sql
+/Backend/database/Queries.sql
