@@ -152,6 +152,8 @@
                     }
 
                     const books = await response.json();
+                    console.log(books);
+                    
                     booksList.innerHTML = '';
 
                     if (books.length === 0) {
@@ -160,11 +162,12 @@
                     } else {
                         emptyMessage.style.display = 'none';
                         books.forEach(book => {
+                            console.log(book);
                             const row = document.createElement('tr');
                             row.innerHTML = `
                                 <td class="px-6 py-4">${book.title}</td>
                                 <td class="px-6 py-4">${book.author}</td>
-                                <td class="px-6 py-4">${book.category_id}</td>
+                                <td class="px-6 py-4">${book.category_name}</td>
                                 <td class="px-6 py-4">${book.published_date}</td>
                                 <td class="px-6 py-4">${book.isbn}</td>
                                 <td class="px-6 py-4">
