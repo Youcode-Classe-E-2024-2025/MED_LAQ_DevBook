@@ -6,6 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import bookRoutes from "./route/bookRoutes.js";
 import categoryRoutes from "./route/categoryRoutes.js";
+import authRoutes from "./route/authRoutes.js";
 import { initializeBookController } from "./controllers/bookController.js";
 import { initializeCategoryController } from "./controllers/categoryController.js";
 
@@ -31,6 +32,7 @@ db.connect((err) => {
     console.error("Database connection failed:", err.message);
     process.exit(1);
   }
+  console.log("Database connected successfully"); // Ensure this log appears
 
   initializeBookController(db);
   initializeCategoryController(db);
@@ -45,9 +47,10 @@ db.connect((err) => {
 });
 
 app.use("/api", bookRoutes, categoryRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../Frontend/Index.html"));
+  res.sendFile(path.resolve(__dirname, "../Frontend/index.html")); // Serve the renamed index.html
 });
 
 app.use((req, res) => {

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bibliothèque Dynamique</title>
+    <title>Authentification - Bibliothèque Dynamique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -11,192 +11,199 @@
     />
   </head>
   <body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <div class="container mx-auto px-4 py-8 max-w-md">
       <div class="bg-white rounded-lg shadow-lg p-6">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
-          <i class="fas fa-book-open mr-2"></i>Ma Bibliothèque
+          <i class="fas fa-user-circle mr-2"></i>Authentification
         </h1>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          <div class="space-y-2">
-            <label for="title" class="block text-sm font-medium text-gray-700"
-              >Titre du livre</label
-            >
-            <input
-              type="text"
-              id="title"
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Entrez le titre du livre"
-            />
-          </div>
-          <div class="space-y-2">
-            <label for="author" class="block text-sm font-medium text-gray-700"
-              >Auteur</label
-            >
-            <input
-              type="text"
-              id="author"
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Entrez le nom de l'auteur"
-            />
-          </div>
-          <div class="space-y-2">
-            <label for="isbn" class="block text-sm font-medium text-gray-700"
-              >ISBN</label
-            >
-            <input
-              type="text"
-              id="isbn"
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Entrez l'ISBN"
-            />
-          </div>
-          <div class="space-y-2">
-            <label for="genre" class="block text-sm font-medium text-gray-700"
-              >Catégorie</label
-            >
-            <select
-              id="genre"
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            ></select>
-          </div>
-          <div class="space-y-2">
-            <label for="year" class="block text-sm font-medium text-gray-700"
-              >Date de publication</label
-            >
-            <input
-              type="date"
-              id="year"
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            />
-          </div>
-        </div>
-
-        <button
-          id="addBook"
-          class="w-full md:w-auto bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center"
-        >
-          <i class="fas fa-plus mr-2"></i>Ajouter un livre
-        </button>
-
-        <div class="my-8 border-t border-gray-200"></div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div id="loginForm" class="space-y-4">
+          <h2 class="text-xl font-semibold text-gray-700 mb-4">Connexion</h2>
           <div class="space-y-2">
             <label
-              for="filterTitle"
+              for="loginEmail"
               class="block text-sm font-medium text-gray-700"
             >
-              <i class="fas fa-search mr-1"></i>Filtrer par titre
+              <i class="fas fa-envelope mr-1"></i>Email
             </label>
             <input
-              type="text"
-              id="filterTitle"
+              type="email"
+              id="loginEmail"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Titre..."
+              placeholder="Entrez votre email"
             />
           </div>
           <div class="space-y-2">
             <label
-              for="filterAuthor"
+              for="loginPassword"
               class="block text-sm font-medium text-gray-700"
             >
-              <i class="fas fa-user mr-1"></i>Filtrer par auteur
+              <i class="fas fa-lock mr-1"></i>Mot de passe
             </label>
             <input
-              type="text"
-              id="filterAuthor"
+              type="password"
+              id="loginPassword"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Auteur..."
+              placeholder="Entrez votre mot de passe"
             />
           </div>
-          <div class="space-y-2">
-            <label
-              for="filterGenre"
-              class="block text-sm font-medium text-gray-700"
-            >
-              <i class="fas fa-tags mr-1"></i>Filtrer par catégorie
-            </label>
-            <select
-              id="filterGenre"
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            ></select>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table id="booksList" class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  <i class="fas fa-book mr-1"></i>Titre
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  <i class="fas fa-user mr-1"></i>Auteur
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  <i class="fas fa-tag mr-1"></i>Catégorie
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  <i class="fas fa-calendar mr-1"></i>Date
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  <i class="fas fa-barcode mr-1"></i>ISBN
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200"></tbody>
-          </table>
-        </div>
-
-        <div id="emptyMessage" class="text-center py-8 text-gray-500 italic">
-          <i class="fas fa-info-circle mr-2"></i>Aucun livre dans la
-          bibliothèque. Ajoutez votre premier livre !
-        </div>
-
-        <div
-          class="mt-6 flex flex-col sm:flex-row justify-between text-sm text-gray-600"
-        >
-          <span id="bookCount" class="mb-2 sm:mb-0">
-            <i class="fas fa-books mr-1"></i>0 livres au total
-          </span>
-          <span id="genreCount">
-            <i class="fas fa-chart-pie mr-1"></i>
-          </span>
-        </div>
-
-        <div class="mt-6 flex justify-center gap-4">
           <button
-            id="prevPage"
-            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 disabled:opacity-50"
+            class="w-full bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-200"
           >
-            <i class="fas fa-chevron-left mr-2"></i>Page précédente
+            <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
           </button>
+          <p class="text-center text-sm text-gray-600">
+            Pas encore de compte?
+            <a
+              href="#"
+              id="showRegister"
+              class="text-indigo-600 hover:text-indigo-800"
+              >S'inscrire</a
+            >
+          </p>
+        </div>
+        <div id="registerForm" class="space-y-4 hidden">
+          <h2 class="text-xl font-semibold text-gray-700 mb-4">Inscription</h2>
+          <div class="space-y-2">
+            <label
+              for="registerName"
+              class="block text-sm font-medium text-gray-700"
+            >
+              <i class="fas fa-user mr-1"></i>Nom complet
+            </label>
+            <input
+              type="text"
+              id="registerName"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Entrez votre nom"
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              for="registerEmail"
+              class="block text-sm font-medium text-gray-700"
+            >
+              <i class="fas fa-envelope mr-1"></i>Email
+            </label>
+            <input
+              type="email"
+              id="registerEmail"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Entrez votre email"
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              for="registerPassword"
+              class="block text-sm font-medium text-gray-700"
+            >
+              <i class="fas fa-lock mr-1"></i>Mot de passe
+            </label>
+            <input
+              type="password"
+              id="registerPassword"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Créez votre mot de passe"
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              for="confirmPassword"
+              class="block text-sm font-medium text-gray-700"
+            >
+              <i class="fas fa-lock mr-1"></i>Confirmer le mot de passe
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Confirmez votre mot de passe"
+            />
+          </div>
           <button
-            id="nextPage"
-            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 disabled:opacity-50"
+            class="w-full bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-200"
           >
-            Page suivante<i class="fas fa-chevron-right ml-2"></i>
+            <i class="fas fa-user-plus mr-2"></i>S'inscrire
           </button>
+          <p class="text-center text-sm text-gray-600">
+            Déjà inscrit?
+            <a
+              href="#"
+              id="showLogin"
+              class="text-indigo-600 hover:text-indigo-800"
+              >Se connecter</a
+            >
+          </p>
         </div>
       </div>
     </div>
-    <script src="./js/fetchBooks.js"></script>
-    <script src="./js/fetchCategory.js"></script>
+    <script src="./js/auth.js"></script>
+    <script>
+      document.querySelector("#loginForm button").addEventListener("click", async (e) => {
+        e.preventDefault();
+        const email = document.querySelector("#loginEmail").value;
+        const password = document.querySelector("#loginPassword").value;
+
+        try {
+          const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await response.json();
+          console.log(data);
+          
+          if (response.ok) {
+            alert("Login successful!");
+            window.location.href = "books.html";
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+        }
+      });
+
+      document.querySelector("#registerForm button").addEventListener("click", async (e) => {
+        e.preventDefault();
+        const name = document.querySelector("#registerName").value;
+        const email = document.querySelector("#registerEmail").value;
+        const password = document.querySelector("#registerPassword").value;
+        const confirmPassword = document.querySelector("#confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            alert("Registration successful!");
+            window.location.href = "books.html"; // Redirect to books.html
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          console.error("Registration error:", error);
+        }
+      });
+
+      document.querySelector("#showRegister").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector("#loginForm").classList.add("hidden");
+        document.querySelector("#registerForm").classList.remove("hidden");
+      });
+
+      document.querySelector("#showLogin").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector("#registerForm").classList.add("hidden");
+        document.querySelector("#loginForm").classList.remove("hidden");
+      });
+    </script>
   </body>
 </html>

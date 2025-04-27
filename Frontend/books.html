@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bibliothèque Dynamique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header with user name and navbar -->
+    <header class="bg-indigo-700 text-white shadow mb-8">
+      <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i class="fas fa-user-circle text-2xl"></i>
+          <span id="userName" class="font-semibold text-lg">Utilisateur</span>
+        </div>
+        <nav class="mt-3 md:mt-0">
+          <ul class="flex gap-6">
+            <li>
+              <a href="/home/medlaq777/Desktop/DevBook/Frontend/books.html" class="hover:underline flex items-center">
+                <i class="fas fa-book mr-1"></i>Mes Livres
+              </a>
+            </li>
+            <li>
+              <a href="/home/medlaq777/Desktop/DevBook/Frontend/borrows.html" class="hover:underline flex items-center">
+                <i class="fas fa-hand-holding mr-1"></i>Mes Emprunts
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
+          <i class="fas fa-book-open mr-2"></i>Ma Bibliothèque
+        </h1>
+        <!-- ... rest of your code ... -->
+        <!-- (No changes below this line) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <div class="space-y-2">
+            <label for="title" class="block text-sm font-medium text-gray-700"
+              >Titre du livre</label
+            >
+            <input
+              type="text"
+              id="title"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Entrez le titre du livre"
+            />
+          </div>
+          <div class="space-y-2">
+            <label for="author" class="block text-sm font-medium text-gray-700"
+              >Auteur</label
+            >
+            <input
+              type="text"
+              id="author"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Entrez le nom de l'auteur"
+            />
+          </div>
+          <div class="space-y-2">
+            <label for="isbn" class="block text-sm font-medium text-gray-700"
+              >ISBN</label
+            >
+            <input
+              type="text"
+              id="isbn"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Entrez l'ISBN"
+            />
+          </div>
+          <div class="space-y-2">
+            <label for="genre" class="block text-sm font-medium text-gray-700"
+              >Catégorie</label
+            >
+            <select
+              id="genre"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            ></select>
+          </div>
+          <div class="space-y-2">
+            <label for="year" class="block text-sm font-medium text-gray-700"
+              >Date de publication</label
+            >
+            <input
+              type="date"
+              id="year"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+
+        <button
+          id="addBook"
+          class="w-full md:w-auto bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center"
+        >
+          <i class="fas fa-plus mr-2"></i>Ajouter un livre
+        </button>
+
+        <div class="my-8 border-t border-gray-200"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="space-y-2">
+            <label
+              for="filterTitle"
+              class="block text-sm font-medium text-gray-700"
+            >
+              <i class="fas fa-search mr-1"></i>Filtrer par titre
+            </label>
+            <input
+              type="text"
+              id="filterTitle"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Titre..."
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              for="filterAuthor"
+              class="block text-sm font-medium text-gray-700"
+            >
+              <i class="fas fa-user mr-1"></i>Filtrer par auteur
+            </label>
+            <input
+              type="text"
+              id="filterAuthor"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Auteur..."
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              for="filterGenre"
+              class="block text-sm font-medium text-gray-700"
+            >
+              <i class="fas fa-tags mr-1"></i>Filtrer par catégorie
+            </label>
+            <select
+              id="filterGenre"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            ></select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table id="booksList" class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  <i class="fas fa-book mr-1"></i>Titre
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  <i class="fas fa-user mr-1"></i>Auteur
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  <i class="fas fa-tag mr-1"></i>Catégorie
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  <i class="fas fa-calendar mr-1"></i>Date
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  <i class="fas fa-barcode mr-1"></i>ISBN
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200"></tbody>
+          </table>
+        </div>
+
+        <div id="emptyMessage" class="text-center py-8 text-gray-500 italic">
+          <i class="fas fa-info-circle mr-2"></i>Aucun livre dans la
+          bibliothèque. Ajoutez votre premier livre !
+        </div>
+
+        <div
+          class="mt-6 flex flex-col sm:flex-row justify-between text-sm text-gray-600"
+        >
+          <span id="bookCount" class="mb-2 sm:mb-0">
+            <i class="fas fa-books mr-1"></i>0 livres au total
+          </span>
+          <span id="genreCount">
+            <i class="fas fa-chart-pie mr-1"></i>
+          </span>
+        </div>
+
+        <div class="mt-6 flex justify-center gap-4">
+          <button
+            id="prevPage"
+            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 disabled:opacity-50"
+          >
+            <i class="fas fa-chevron-left mr-2"></i>Page précédente
+          </button>
+          <button
+            id="nextPage"
+            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 disabled:opacity-50"
+          >
+            Page suivante<i class="fas fa-chevron-right ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="./js/fetchBooks.js"></script>
+    <script src="./js/fetchCategory.js"></script>
+    <script>
+      // Example: sessionStorage.setItem('role', 'admin'); // or 'user'
+      const role = sessionStorage.getItem('role') || 'user';
+
+      // Set user name in header (from sessionStorage or fallback)
+      document.getElementById('userName').textContent =
+        sessionStorage.getItem('username') || 'Utilisateur';
+
+      // Hide "Ajouter un livre" button if not admin
+      if (role !== 'admin') {
+        document.getElementById('addBook').style.display = 'none';
+      }
+
+      // Hide edit/delete buttons in the table if not admin
+      // Wait for DOM and books to be rendered
+      function hideAdminActions() {
+        if (role !== 'admin') {
+          document.querySelectorAll('.edit-btn, .delete-btn').forEach(btn => {
+            btn.style.display = 'none';
+          });
+        }
+      }
+
+      // Call hideAdminActions after books are rendered
+      // Example: If you render books in fetchBooks.js, call hideAdminActions() after rendering rows
+
+      // Optionally, observe table changes if rows are dynamic
+      const booksList = document.querySelector('#booksList tbody');
+      if (booksList) {
+        const observer = new MutationObserver(hideAdminActions);
+        observer.observe(booksList, { childList: true, subtree: true });
+      }
+    </script>
+  </body>
+</html>
