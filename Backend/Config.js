@@ -31,10 +31,9 @@ db.connect((err) => {
     console.error("Database connection failed:", err.message);
     process.exit(1);
   }
-  console.log("Connected to the database");
 
   initializeBookController(db);
-  initializeCategoryController(db); // Initialize categoriesRepository here
+  initializeCategoryController(db);
 
   db.query("SHOW TABLES", (err, results) => {
     if (err) {
