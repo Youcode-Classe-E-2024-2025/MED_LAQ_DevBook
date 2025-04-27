@@ -11,7 +11,6 @@ export const getAllBooks = async (req, res) => {
     const books = await bookRepository.findAll();
     res.status(200).json(books);
   } catch (error) {
-    console.error("Error in getAllBooks controller:", error.message);
     res
       .status(500)
       .json({
