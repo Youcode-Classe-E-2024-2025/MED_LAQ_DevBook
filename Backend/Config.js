@@ -5,7 +5,9 @@ import mysql from "mysql";
 import path from "path";
 import { fileURLToPath } from "url";
 import bookRoutes from "./route/bookRoutes.js";
+import categoryRoutes from "./route/categoryRoutes.js";
 import { initializeBookController } from "./controllers/bookController.js";
+import { initializeCategoryController } from "./controllers/categoryController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +34,7 @@ db.connect((err) => {
   console.log("Connected to the database");
 
   initializeBookController(db);
+  initializeCategoryController(db); // Initialize categoriesRepository here
 
   db.query("SHOW TABLES", (err, results) => {
     if (err) {
@@ -42,7 +45,7 @@ db.connect((err) => {
   });
 });
 
-app.use("/api", bookRoutes);
+app.use("/api", bookRoutes, categoryRoutes);
 
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../Frontend/Index.html"));

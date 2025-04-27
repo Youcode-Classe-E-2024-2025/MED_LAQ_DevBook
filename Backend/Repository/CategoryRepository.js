@@ -5,10 +5,12 @@ class categoryRepository {
 
   findAll() {
     return new Promise((resolve, reject) => {
-      const query = "SELECT c.id, c.name, c.description FROM categories AS c";
+      const query = "SELECT * FROM categories";
       this.db.query(query, (err, results) => {
         resolve(results);
       });
     });
   }
 }
+
+export { categoryRepository }; 

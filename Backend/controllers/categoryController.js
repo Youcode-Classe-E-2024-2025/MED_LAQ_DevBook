@@ -1,13 +1,14 @@
-import categoryRepository from "../Repository/CategoryRepository.js";
+import { categoryRepository } from "../Repository/CategoryRepository.js";
 
-let categoryRepository;
+let categoriesRepository; // Declare categoriesRepository at the top
 
 export const initializeCategoryController = (db) => {
-  categoryRepository = new categoryRepository(db);
-}
+  categoriesRepository = new categoryRepository(db); // Initialize it here
+};
+
 export const getAllCategories = async (req, res) => {
   try {
-    const categories = await categoryRepository.findAll();
+    const categories = await categoriesRepository.findAll();
     res.status(200).json(categories);
   } catch (error) {
     res
@@ -17,4 +18,4 @@ export const getAllCategories = async (req, res) => {
         error: error.message,
       });
   }
-}
+};
