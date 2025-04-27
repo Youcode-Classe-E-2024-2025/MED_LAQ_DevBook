@@ -103,6 +103,12 @@
             color: #7f8c8d;
             font-size: 14px;
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -134,6 +140,14 @@
         <div class="form-group">
             <label for="year">Année de publication</label>
             <input type="number" id="year" placeholder="Entrez l'année de publication">
+        </div>
+        <div class="form-group">
+            <label for="status">Statut de lecture</label>
+            <select id="status">
+                <option value="to-read">À lire</option>
+                <option value="reading">En cours</option>
+                <option value="read">Lu</option>
+            </select>
         </div>
         <button id="addBook">Ajouter un livre</button>
         
@@ -172,6 +186,7 @@
                     <th>Auteur</th>
                     <th>Genre</th>
                     <th>Année</th>
+                    <th>Statut</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -187,24 +202,31 @@
             <span id="bookCount">0 livres au total</span>
             <span id="genreCount"></span>
         </div>
+        <div class="pagination">
+            <button id="prevPage">Page précédente</button>
+            <button id="nextPage">Page suivante</button>
+        </div>
     </div>
 
     <script>
         
         let books = [
-            { id: 1, title: "1984", author: "George Orwell", genre: "Science-Fiction", year: 1949 },
-            { id: 2, title: "Le Petit Prince", author: "Antoine de Saint-Exupéry", genre: "Roman", year: 1943 },
-            { id: 3, title: "Harry Potter à l'école des sorciers", author: "J.K. Rowling", genre: "Fantastique", year: 1997 },
-            { id: 4, title: "Le Seigneur des Anneaux", author: "J.R.R. Tolkien", genre: "Fantastique", year: 1954 },
-            { id: 5, title: "Les Misérables", author: "Victor Hugo", genre: "Roman", year: 1862 }
+            { id: 1, title: "1984", author: "George Orwell", genre: "Science-Fiction", year: 1949, status: "read" },
+            { id: 2, title: "Le Petit Prince", author: "Antoine de Saint-Exupéry", genre: "Roman", year: 1943, status: "read" },
+            { id: 3, title: "Harry Potter à l'école des sorciers", author: "J.K. Rowling", genre: "Fantastique", year: 1997, status: "to-read" },
+            { id: 4, title: "Le Seigneur des Anneaux", author: "J.R.R. Tolkien", genre: "Fantastique", year: 1954, status: "reading" },
+            { id: 5, title: "Les Misérables", author: "Victor Hugo", genre: "Roman", year: 1862, status: "read" }
         ];
         let nextId = 6;
+        let currentPage = 1;
+        const booksPerPage = 5;
 
         
         const titleInput = document.getElementById('title');
         const authorInput = document.getElementById('author');
         const genreInput = document.getElementById('genre');
         const yearInput = document.getElementById('year');
+        const statusInput = document.getElementById('status');
         const addButton = document.getElementById('addBook');
         const booksListBody = document.querySelector('#booksList tbody');
         const emptyMessage = document.getElementById('emptyMessage');
@@ -213,6 +235,8 @@
         const filterTitle = document.getElementById('filterTitle');
         const filterAuthor = document.getElementById('filterAuthor');
         const filterGenre = document.getElementById('filterGenre');
+        const prevPageButton = document.getElementById('prevPage');
+        const nextPageButton = document.getElementById('nextPage');
 
         
         function renderBooks(booksToRender) {
@@ -227,13 +251,18 @@
             
             emptyMessage.style.display = 'none';
             
-            booksToRender.forEach(book => {
+            const start = (currentPage - 1) * booksPerPage;
+            const end = start + booksPerPage;
+            const paginatedBooks = booksToRender.slice(start, end);
+
+            paginatedBooks.forEach(book => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${book.title}</td>
                     <td>${book.author}</td>
                     <td>${book.genre}</td>
                     <td>${book.year}</td>
+                    <td>${book.status}</td>
                     <td class="actions">
                         <button class="btn-danger" data-id="${book.id}">Supprimer</button>
                     </td>
@@ -266,6 +295,9 @@
                     removeBook(id);
                 });
             });
+
+            prevPageButton.disabled = currentPage === 1;
+            nextPageButton.disabled = end >= booksToRender.length;
         }
 
         
@@ -274,6 +306,7 @@
             const author = authorInput.value.trim();
             const genre = genreInput.value;
             const year = parseInt(yearInput.value);
+            const status = statusInput.value;
             
             if (!title || !author) {
                 alert('Veuillez remplir au moins le titre et l\'auteur.');
@@ -285,7 +318,8 @@
                 title,
                 author,
                 genre,
-                year: isNaN(year) ? '' : year
+                year: isNaN(year) ? '' : year,
+                status
             };
             
             books.push(newBook);
@@ -295,6 +329,7 @@
             authorInput.value = '';
             genreInput.value = '';
             yearInput.value = '';
+            statusInput.value = '';
             
             
             filterBooks();
@@ -323,6 +358,11 @@
             renderBooks(filteredBooks);
         }
 
+        function changePage(offset) {
+            currentPage += offset;
+            filterBooks();
+        }
+
         
         document.addEventListener('DOMContentLoaded', function() {
             
@@ -330,6 +370,8 @@
             filterTitle.addEventListener('input', filterBooks);
             filterAuthor.addEventListener('input', filterBooks);
             filterGenre.addEventListener('change', filterBooks);
+            prevPageButton.addEventListener('click', () => changePage(-1));
+            nextPageButton.addEventListener('click', () => changePage(1));
             
             
             renderBooks(books);
