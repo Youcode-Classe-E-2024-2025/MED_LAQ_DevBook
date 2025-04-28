@@ -63,20 +63,20 @@
         </div>
         <div id="registerForm" class="space-y-4 hidden">
           <h2 class="text-xl font-semibold text-gray-700 mb-4">Inscription</h2>
-          <div class="space-y-2">
+            <div class="space-y-2">
             <label
-              for="registerName"
+              for="registerUsername"
               class="block text-sm font-medium text-gray-700"
             >
-              <i class="fas fa-user mr-1"></i>Nom complet
+              <i class="fas fa-user-tag mr-1"></i>Nom d'utilisateur
             </label>
             <input
               type="text"
-              id="registerName"
+              id="registerUsername"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Entrez votre nom"
+              placeholder="Entrez votre nom d'utilisateur"
             />
-          </div>
+            </div>
           <div class="space-y-2">
             <label
               for="registerEmail"
@@ -137,73 +137,5 @@
       </div>
     </div>
     <script src="./js/auth.js"></script>
-    <script>
-      document.querySelector("#loginForm button").addEventListener("click", async (e) => {
-        e.preventDefault();
-        const email = document.querySelector("#loginEmail").value;
-        const password = document.querySelector("#loginPassword").value;
-
-        try {
-          const response = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
-          const data = await response.json();
-          console.log(data);
-          
-          if (response.ok) {
-            alert("Login successful!");
-            window.location.href = "books.html";
-          } else {
-            alert(data.message);
-          }
-        } catch (error) {
-          console.error("Login error:", error);
-        }
-      });
-
-      document.querySelector("#registerForm button").addEventListener("click", async (e) => {
-        e.preventDefault();
-        const name = document.querySelector("#registerName").value;
-        const email = document.querySelector("#registerEmail").value;
-        const password = document.querySelector("#registerPassword").value;
-        const confirmPassword = document.querySelector("#confirmPassword").value;
-
-        if (password !== confirmPassword) {
-          alert("Passwords do not match!");
-          return;
-        }
-
-        try {
-          const response = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password }),
-          });
-          const data = await response.json();
-          if (response.ok) {
-            alert("Registration successful!");
-            window.location.href = "books.html"; // Redirect to books.html
-          } else {
-            alert(data.message);
-          }
-        } catch (error) {
-          console.error("Registration error:", error);
-        }
-      });
-
-      document.querySelector("#showRegister").addEventListener("click", (e) => {
-        e.preventDefault();
-        document.querySelector("#loginForm").classList.add("hidden");
-        document.querySelector("#registerForm").classList.remove("hidden");
-      });
-
-      document.querySelector("#showLogin").addEventListener("click", (e) => {
-        e.preventDefault();
-        document.querySelector("#registerForm").classList.add("hidden");
-        document.querySelector("#loginForm").classList.remove("hidden");
-      });
-    </script>
   </body>
 </html>

@@ -1,9 +1,9 @@
 import { db } from "../Config.js";
 
-export const createUser = (name, email, password) => {
+export const createUser = (username, email, password) => {
   return new Promise((resolve, reject) => {
-    const query = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-    db.query(query, [name, email, password], (err, results) => {
+    const query = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
+    db.query(query, [username, email, password], (err, results) => {
       if (err) return reject(err);
       resolve(results);
     });
@@ -15,10 +15,10 @@ export const findUserByEmail = (email) => {
     const query = "SELECT * FROM users WHERE email = ?";
     db.query(query, [email], (err, results) => {
       if (err) {
-        console.error("Database query error:", err.message); // Debugging log
+        console.error("Database query error:", err.message); 
         return reject(err);
       }
-      console.log("Query results for email:", email, results); // Debugging log
+      console.log("Query results for email:", email, results); 
       resolve(results[0]);
     });
   });
